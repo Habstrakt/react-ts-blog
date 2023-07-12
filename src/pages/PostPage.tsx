@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import Spinner from "../components/SpinnerComponent";
 
 import styles from "./PostPage.module.css";
@@ -12,23 +12,26 @@ interface Post {
 }
 
 const Post: React.FC = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState<Post | undefined>();
+  const { id } = useParams<{ id: string }>();
+  const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const postUrl = `https://63b30db9ea89e3e3db3cb777.mockapi.io/posts/${id}`;
-        const response = await axios.get<Post>(postUrl);
-        setPost(response.data);
+        const response: AxiosResponse<Post> = await axios.get<Post>(postUrl);
+        const postData: Post = response.data;
+        setPost(postData);
       } catch (error) {
         console.log(error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchPost();
+    fetchPost().catch((error) => {
+      console.log(error);
+    });
   }, [id]);
 
   if (isLoading) {

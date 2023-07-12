@@ -4,19 +4,30 @@ import axios from "axios";
 import styles from "./PostList.module.css";
 import Spinner from "./SpinnerComponent";
 
+interface Posts {
+  id: string;
+  title: string;
+  body: string;
+}
+
 const PostList: React.FC = () => {
-  const [posts, setPosts] = useState<
-    Array<{ id: string; title: string; body: string }>
-  >([]);
+  const [posts, setPosts] = useState<Array<Posts>>([]);
+  const postsUrl = "https://63b30db9ea89e3e3db3cb777.mockapi.io/posts";
 
   useEffect(() => {
-    const postsUrl = "https://63b30db9ea89e3e3db3cb777.mockapi.io/posts";
-    axios.get(postsUrl).then((response) => {
-      const allPosts = response.data;
-      setPosts(allPosts.reverse());
+    const fetchPosts = async (): Promise<void> => {
+      try {
+        const response = await axios.get(postsUrl) as Posts[];
+        const allPosts = response.data;
+        setPosts(allPosts.reverse());
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPosts().catch((error) => {
+      console.log(error);
     });
   }, [setPosts]);
-  console.log(posts);
 
   if (posts.length == 0) {
     return (
