@@ -1,0 +1,11 @@
+.cardGroup {
+  padding: 50px;
+  background-color: white;
+  margin-top: 21px;
+}
+.cardText {
+  max-height: fit-content;
+}
+.cardFooter {
+  padding: 8px;
+}

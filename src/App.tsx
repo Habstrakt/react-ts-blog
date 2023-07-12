@@ -4,7 +4,7 @@ import Header from "./components/HeaderBlogComponent";
 import Aside from "./components/AsideComponent";
 import PostList from "./components/PostList";
 import Post from "./pages/PostPage";
-import About from "./pages/AboutPage";
+import Portfolio from "./pages/PortfolioPage";
 
 const App: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<PostList />} end />
               <Route path="/post/:id" element={<Post />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/portfolio" element={<Portfolio />} />
             </Routes>
           </div>
         </div>
