@@ -1,6 +1,7 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import styles from "./PostList.module.css";
 import Spinner from "./SpinnerComponent";
 
@@ -15,11 +16,13 @@ const PostList: React.FC = () => {
   const postsUrl = "https://63b30db9ea89e3e3db3cb777.mockapi.io/posts";
 
   useEffect(() => {
-    const fetchPosts = async (): Promise<void> => {
+    const fetchPosts = async () => {
       try {
-        const response = await axios.get(postsUrl) as Posts[];
-        const allPosts = response.data;
-        setPosts(allPosts.reverse());
+        const response: AxiosResponse<Posts> = await axios.get(postsUrl);
+        const allPosts: Posts = response.data;
+
+        const reversedPosts = (allPosts as unknown as Posts[]).reverse();
+        setPosts(reversedPosts);
       } catch (error) {
         console.log(error);
       }
