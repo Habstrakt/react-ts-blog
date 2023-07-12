@@ -1,5 +1,15 @@
 import React from "react";
 
-export const Test: React.FC = () => {
-  return <div>TEST COMPONENT</div>;
+type Posts = {
+  id: number;
+  title: string;
+  price: number;
+  imageUrl: string;
+};
+export const Test: React.FC<Posts> = ({ id, title, price, imageUrl }) => {
+  return (
+    <div>
+      TEST COMPONENT {id} - {title} - {price} - {imageUrl}
+    </div>
+  );
 };

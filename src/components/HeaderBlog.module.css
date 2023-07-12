@@ -1,0 +1,33 @@
+header {
+  background-color: #323e4e;
+  padding: 18px;
+  height: auto;
+}
+.row {
+  align-items: center;
+}
+.menu_items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+li {
+  padding-right: 20px;
+}
+.menu_item {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+.menu_item:hover {
+  color: #fff;
+}
+.logo {
+  max-width: 150px;
+}
+@media screen and (max-width: 414px) {
+  .menu_items {
+    justify-content: flex-start;
+  }
+}
