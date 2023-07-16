@@ -16,19 +16,22 @@ const Post: React.FC = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
+  async function fetchPost() {
+    try {
+      if (id) {
         const postUrl = `https://63b30db9ea89e3e3db3cb777.mockapi.io/posts/${id}`;
         const response: AxiosResponse<Post> = await axios.get<Post>(postUrl);
         const postData: Post = response.data;
         setPost(postData);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
       }
-    };
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
     fetchPost().catch((error) => {
       console.log(error);
     });

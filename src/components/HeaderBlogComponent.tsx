@@ -1,10 +1,12 @@
 import styles from "./HeaderBlog.module.css";
 import { Link } from "react-router-dom";
+
 const links = [
   { name: "Portfolio", url: "/portfolio" },
   { name: "About", url: "/about" },
 ];
-function Header() {
+
+const Header: React.FC = () => {
   return (
     <header>
       <div className="container">
@@ -29,5 +31,6 @@ function Header() {
       </div>
     </header>
   );
-}
+};
+
 export default Header;

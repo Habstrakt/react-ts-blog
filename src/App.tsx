@@ -14,7 +14,9 @@ const App: React.FC = () => {
       <main>
         <div className="container">
           <div className="row">
-            <Aside />
+            <div className="col-lg-3">
+              <Aside />
+            </div>
             <Routes>
               <Route path="/" element={<PostList />} end />
               <Route path="/post/:id" element={<Post />} />

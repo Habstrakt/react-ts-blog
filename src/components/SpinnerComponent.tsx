@@ -1,7 +1,9 @@
 import styles from "./Spinner.module.css";
+import classNames from "classnames";
+
 function Spinner() {
   return (
-    <div className={`${styles.spinner} spinner-border`} role="status">
+    <div className={classNames("spinner-border", styles.spinner)} role="status">
       <span className="visually-hidden">Loading...</span>
     </div>
   );

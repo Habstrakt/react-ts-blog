@@ -12,27 +12,31 @@ interface Posts {
 }
 
 const PostList: React.FC = () => {
-  const [posts, setPosts] = useState<Array<Posts>>([]);
   const postsUrl = "https://63b30db9ea89e3e3db3cb777.mockapi.io/posts";
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response: AxiosResponse<Posts> = await axios.get(postsUrl);
-        const allPosts: Posts = response.data;
+  const [posts, setPosts] = useState<Array<Posts>>([]);
 
-        const reversedPosts = (allPosts as unknown as Posts[]).reverse();
-        setPosts(reversedPosts);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  async function fetchPosts() {
+    try {
+      const response: AxiosResponse<Posts> = await axios.get(postsUrl);
+
+      const allPosts: Posts = response.data;
+
+      const reversedPosts = (allPosts as unknown as Posts[]).reverse();
+
+      setPosts(reversedPosts);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
     fetchPosts().catch((error) => {
       console.log(error);
     });
   }, [setPosts]);
 
-  if (posts.length == 0) {
+  if (!posts.length) {
     return (
       <div className="col-lg-9">
         <Spinner />
@@ -43,7 +47,7 @@ const PostList: React.FC = () => {
     <div className="col-lg-9">
       <section>
         {posts.map((post) => (
-          <article key={post.id}>
+          <article key={post.id.toString()}>
             <h3>
               <Link to={`/post/${post.id}`} className={styles.text_title}>
                 {post.title}
