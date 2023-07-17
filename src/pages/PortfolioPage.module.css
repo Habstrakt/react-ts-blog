@@ -3,10 +3,12 @@
   background-color: white;
   margin-top: 21px;
 }
+
 .cardText {
   max-height: fit-content;
   text-align: left;
 }
+
 .cardFooter {
   padding: 8px;
 }
