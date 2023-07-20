@@ -5,7 +5,7 @@ import Aside from "./components/AsideComponent";
 import PostList from "./components/PostList";
 import Post from "./pages/PostPage";
 import Portfolio from "./pages/PortfolioPage";
-import Counter from "./pages/Counter";
+import Counter from "./pages/CounterPage";
 
 const App: React.FC = () => {
   return (
