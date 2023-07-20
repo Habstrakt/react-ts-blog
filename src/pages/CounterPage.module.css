@@ -1,0 +1,19 @@
+.card {
+  width: 18rem;
+  margin: 0 auto;
+  margin-top: 41px;
+}
+
+.count {
+  font-size: 2rem;
+}
+
+.btnCounter {
+  min-width: 50px;
+  font-weight: 900 !important;
+}
+
+.btnReset {
+  margin: 0 auto;
+  margin-top: 30px;
+}
