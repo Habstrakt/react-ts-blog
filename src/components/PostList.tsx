@@ -1,11 +1,11 @@
 import React from "react";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
 import styles from "./PostList.module.css";
 import Spinner from "./SpinnerComponent";
 
-interface Posts {
+interface Post {
   id: string;
   title: string;
   body: string;
@@ -14,15 +14,13 @@ interface Posts {
 const PostList: React.FC = () => {
   const postsUrl = "https://63b30db9ea89e3e3db3cb777.mockapi.io/posts";
 
-  const [posts, setPosts] = useState<Array<Posts>>([]);
+  const [posts, setPosts] = useState<Array<Post>>([]);
 
   async function fetchPosts() {
     try {
-      const response: AxiosResponse<Posts> = await axios.get(postsUrl);
-
-      const allPosts: Posts = response.data;
-
-      const reversedPosts = (allPosts as unknown as Posts[]).reverse();
+      const response = await axios.get<Array<Post>>(postsUrl);
+      const allPosts = response.data;
+      const reversedPosts = allPosts.reverse();
 
       setPosts(reversedPosts);
     } catch (err) {
@@ -31,9 +29,8 @@ const PostList: React.FC = () => {
   }
 
   useEffect(() => {
-    fetchPosts().catch((error) => {
-      console.log(error);
-    });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    fetchPosts();
   }, [setPosts]);
 
   if (!posts.length) {
