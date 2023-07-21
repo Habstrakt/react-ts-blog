@@ -25,7 +25,7 @@ const portfolios: Portfolios[] = [
   },
   {
     title: "Веб-приложение для погоды",
-    url: "/",
+    url: "/portfolio/weather",
     text: "Приложение, которое показывает текущую погоду в различных городах",
     instruments: "React, TypeScript, API",
   },

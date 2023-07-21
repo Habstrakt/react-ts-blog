@@ -6,6 +6,7 @@ import PostList from "./components/PostList";
 import Post from "./pages/PostPage";
 import Portfolio from "./pages/PortfolioPage";
 import Counter from "./pages/CounterPage";
+import WeatherPage from "./pages/WeatherPage";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
               <Route path="/post/:id" element={<Post />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/portfolio/counter" element={<Counter />} />
+              <Route path="/portfolio/weather" element={<WeatherPage />} />
             </Routes>
           </div>
         </div>
