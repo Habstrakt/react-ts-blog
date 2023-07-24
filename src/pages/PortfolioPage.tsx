@@ -31,7 +31,7 @@ const portfolios: Portfolios[] = [
   },
   {
     title: "Сайт доставки пиццы",
-    url: "/",
+    url: "/portfolio/pizzas",
     text: "Сайт пиццерии. Страница продуктов, а так же корзина",
     instruments: "React, TypeScript, Redux toolkit",
   },
@@ -41,7 +41,7 @@ const Portfolio: React.FC = () => {
   return (
     <>
       <div className="col-lg-9">
-        <div className={classNames("styles.cardGroup", "card-group")}>
+        <div className={classNames(styles.cardGroup, "card-group")}>
           <div className="row justify-content-evenly">
             {portfolios.map((item) => (
               <div className="card col-md-5 mb-4" key={item.title}>
