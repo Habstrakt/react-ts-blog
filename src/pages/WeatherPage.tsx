@@ -3,9 +3,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const WeatherPage: React.FC = () => {
-  const cityName = React.useRef();
+  const cityName = React.useRef<string>();
 
-  const [city, setCity] = useState<any>(null);
+  const [city, setCity] = useState<string>("");
 
   async function getWeather() {
     try {
@@ -24,7 +24,7 @@ const WeatherPage: React.FC = () => {
   return (
     <>
       <div className="col-lg-9">
-        <h1>weather</h1>
+        <h1>Узнать погоду приложение</h1>
         <input type="text" placeholder="Введите город" ref={cityName} />
         <button onClick={getWeather}>Узнать погоду</button>
         {city && (
