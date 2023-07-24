@@ -1,0 +1,13 @@
+.todoWrapper {
+  padding: 50px;
+  background-color: white;
+  margin-top: 21px !important;
+}
+.inputBlock {
+  text-align: center;
+}
+.title {
+  text-align: center;
+  background-color: #68c3a3;
+  border-radius: 5px;
+}

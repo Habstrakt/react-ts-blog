@@ -19,7 +19,7 @@ const portfolios: Portfolios[] = [
   },
   {
     title: "Список задач",
-    url: "/",
+    url: "/portfolio/todo",
     text: "Список задач, в котором пользователь может добавлять, удалять и редактировать записи",
     instruments: "React, TypeScript",
   },
