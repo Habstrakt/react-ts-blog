@@ -4,46 +4,53 @@ import classNames from "classnames";
 import foodsData from "../../assets/foods.json";
 import { useEffect } from "react";
 
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  imageUrl: string;
+  description: string;
+  sizes: number[];
+  prices: number[];
+  selectedSize: number;
+  selectedPrice: number;
+}
+
 const ProductList: React.FC = () => {
   const categoryProducts = ["Все", "Пицца", "Закуски", "Напитки"];
-  const [selectedCategory, setSelectedCategory] = useState("Все");
 
-  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Все");
+  const [products, setProducts] = useState<Product[]>([]);
 
   function filterProducts(index) {
     const category = categoryProducts[index];
 
-    console.log(products);
+    const productsData = foodsData.products.filter((item) => {
+      return category === "Все" || item.category === category;
+    });
 
-    const productsData = foodsData.products.reduce((acc, item) => {
-      if (category === "Все" || item.category === category) {
-        const selectedPrice = Array.isArray(item.price)
-          ? item.price[0]
-          : item.price;
+    const updatedProducts = productsData.map((product) => ({
+      ...product,
+      selectedSize: product.sizes ? product.sizes[0] : 0,
+      selectedPrice: product.prices[0],
+    }));
 
-        const selectedSize = Array.isArray(item.sizes)
-          ? item.sizes[0]
-          : item.sizes;
+    setProducts(updatedProducts);
+    setSelectedCategory(category);
+  }
 
-        return [
-          ...acc,
-          {
-            ...item,
-            selectedPrice,
-            selectedSize,
-          },
-        ];
+  function handleSizeBtn(size, itemId) {
+    const updatedProducts = products.map((product) => {
+      if (product.id === itemId) {
+        return {
+          ...product,
+          selectedSize: size,
+          selectedPrice: product.prices[product.sizes.indexOf(size)],
+        };
       }
-      return acc;
-    }, []);
-
-    setProducts(productsData);
-
-    if (category === "Все") {
-      setSelectedCategory("Все");
-    } else {
-      setSelectedCategory(category);
-    }
+      return product;
+    });
+    setProducts(updatedProducts);
   }
 
   useEffect(() => {
@@ -65,16 +72,16 @@ const ProductList: React.FC = () => {
       </ul>
       <section className={styles.section}>
         <div className="row">
-          {products.map((item) => (
+          {products.map((item, index) => (
             <div
-              key={item}
+              key={index}
               className={classNames(
                 styles.productCard,
                 "col-lg-3 col-md-4 col-sm-6"
               )}
             >
               <div className={styles.productImg}>
-                <img className={styles.img} alt="" />
+                <img className={styles.img} alt="" src={item.imageUrl} />
               </div>
               <div className="product-info">
                 <span className={styles.productTitle}>{item.name}</span>
@@ -86,7 +93,8 @@ const ProductList: React.FC = () => {
                     <button
                       type="button"
                       className="btn bg-warning position-relative me-3"
-                      key={index}
+                      key={size}
+                      onClick={() => handleSizeBtn(size, item.id)}
                     >
                       {size}
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -97,11 +105,9 @@ const ProductList: React.FC = () => {
                 </div>
               </div>
               <div className={classNames(styles.productFooter, "mt-3")}>
-                {item.prices?.map((price, index) => (
-                  <div key={index} className="product-price">
-                    {price}
-                  </div>
-                ))}
+                <div key={index} className="product-price">
+                  <span>{item.selectedPrice} рублей</span>
+                </div>
                 <button
                   type="button"
                   className="btn btn-danger position-relative"
