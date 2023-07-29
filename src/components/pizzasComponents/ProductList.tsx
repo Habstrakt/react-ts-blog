@@ -4,6 +4,9 @@ import classNames from "classnames";
 import foodsData from "../../assets/foods.json";
 import { useEffect } from "react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { addProductToCart } from "../../redux/pizzaSlice";
+
 interface Product {
   id: number;
   name: string;
@@ -21,6 +24,20 @@ const ProductList: React.FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string>("Все");
   const [products, setProducts] = useState<Product[]>([]);
+  const dispatch = useDispatch();
+
+  function handleAddCart(item) {
+    dispatch(
+      addProductToCart({
+        id: item.id,
+        name: item.name,
+        imageUrl: item.imageUrl,
+        selectedSize: item.selectedSize,
+        selectedPrice: item.selectedPrice,
+        quantity: 1,
+      })
+    );
+  }
 
   function filterProducts(index) {
     const category = categoryProducts[index];
@@ -48,6 +65,7 @@ const ProductList: React.FC = () => {
           selectedPrice: product.prices[product.sizes.indexOf(size)],
         };
       }
+      console.log(product);
       return product;
     });
     setProducts(updatedProducts);
@@ -111,6 +129,7 @@ const ProductList: React.FC = () => {
                 <button
                   type="button"
                   className="btn btn-danger position-relative"
+                  onClick={() => handleAddCart(item)}
                 >
                   + Добавить
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
