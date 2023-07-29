@@ -1,7 +1,14 @@
 import React from "react";
 import styles from "./PizzaHeader.module.css";
+import { useSelector } from "react-redux";
 
 const Header: React.FC = () => {
+  const productCart = useSelector((state) => state.pizza.productsCart);
+
+  function totalQuantity() {
+    return productCart.reduce((total, product) => total + product.quantity, 0);
+  }
+
   return (
     <nav className={styles.nav}>
       <div className={styles.menuNav}>
@@ -57,7 +64,7 @@ const Header: React.FC = () => {
                   fill="white"
                 ></path>
               </svg>
-              <span className={styles.count}>1</span>
+              <span className={styles.count}>{totalQuantity()}</span>
             </div>
             <span className={styles.sum}>123123 ₽</span>
           </a>

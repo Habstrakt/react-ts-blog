@@ -20,11 +20,19 @@ interface Product {
 }
 
 const ProductList: React.FC = () => {
+  const dispatch = useDispatch();
+
   const categoryProducts = ["Все", "Пицца", "Закуски", "Напитки"];
 
   const [selectedCategory, setSelectedCategory] = useState<string>("Все");
+
   const [products, setProducts] = useState<Product[]>([]);
-  const dispatch = useDispatch();
+
+  const [activeSizeIndex, setActiveSizeIndex] = useState<{
+    [key: number]: number;
+  }>({});
+
+  const productCart = useSelector((state) => state.pizza.productsCart);
 
   function handleAddCart(item) {
     dispatch(
@@ -53,10 +61,17 @@ const ProductList: React.FC = () => {
     }));
 
     setProducts(updatedProducts);
+    setActiveSizeIndex((prevIndexes) => {
+      const updatedIndexes = { ...prevIndexes };
+      updatedProducts.forEach((product) => {
+        updatedIndexes[product.id] = 0;
+      });
+      return updatedIndexes;
+    });
     setSelectedCategory(category);
   }
 
-  function handleSizeBtn(size, itemId) {
+  function handleSizeBtn(size, itemId, sizeIndex) {
     const updatedProducts = products.map((product) => {
       if (product.id === itemId) {
         return {
@@ -65,10 +80,15 @@ const ProductList: React.FC = () => {
           selectedPrice: product.prices[product.sizes.indexOf(size)],
         };
       }
-      console.log(product);
       return product;
     });
+
     setProducts(updatedProducts);
+
+    setActiveSizeIndex((prevIndexes) => ({
+      ...prevIndexes,
+      [itemId]: sizeIndex,
+    }));
   }
 
   useEffect(() => {
@@ -107,19 +127,30 @@ const ProductList: React.FC = () => {
                   {item.description}
                 </div>
                 <div className="mt-2">
-                  {item.sizes?.map((size, index) => (
-                    <button
-                      type="button"
-                      className="btn bg-warning position-relative me-3"
-                      key={size}
-                      onClick={() => handleSizeBtn(size, item.id)}
-                    >
-                      {size}
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        1
-                      </span>
-                    </button>
-                  ))}
+                  {item.sizes?.map((size, sizeIndex) => {
+                    const productInCart = productCart.find(
+                      (product) =>
+                        product.id === item.id && product.selectedSize === size
+                    );
+                    return (
+                      <button
+                        type="button"
+                        className={classNames(
+                          "btn bg-warning position-relative me-3",
+                          { active: sizeIndex === activeSizeIndex[item.id] }
+                        )}
+                        key={size}
+                        onClick={() => handleSizeBtn(size, item.id, sizeIndex)}
+                      >
+                        {size}
+                        {productInCart && (
+                          <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {productInCart.quantity}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
               <div className={classNames(styles.productFooter, "mt-3")}>
@@ -132,9 +163,6 @@ const ProductList: React.FC = () => {
                   onClick={() => handleAddCart(item)}
                 >
                   + Добавить
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
-                    10
-                  </span>
                 </button>
               </div>
             </div>
