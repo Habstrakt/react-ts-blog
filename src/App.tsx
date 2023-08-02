@@ -10,6 +10,7 @@ import WeatherPage from "./pages/WeatherPage";
 import ToDo from "./pages/TodoPage";
 
 import Pizza from "./pages/pizzas/PizzaPage";
+import Cart from "./pages/pizzas/PizzaCartPage";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const App: React.FC = () => {
               <Route path="/portfolio/weather" element={<WeatherPage />} />
               <Route path="/portfolio/todo" element={<ToDo />} />
               <Route path="/portfolio/pizzas" element={<Pizza />} />
+              <Route path="/portfolio/pizzas/cart" element={<Cart />} />
             </Routes>
           </div>
         </div>

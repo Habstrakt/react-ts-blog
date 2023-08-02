@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./PizzaHeader.module.css";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const productCart = useSelector((state) => state.pizza.productsCart);
@@ -52,7 +53,7 @@ const Header: React.FC = () => {
           </svg>
         </div>
         <div className={styles.cart}>
-          <a className={styles.cartItems}>
+          <Link to="/portfolio/pizzas/cart" className={styles.cartItems}>
             <div className={styles.cartIco}>
               <svg
                 width="18"
@@ -77,7 +78,7 @@ const Header: React.FC = () => {
               <span className={styles.count}>{totalQuantity()}</span>
             </div>
             <span className={styles.sum}>{totalPrice()} ₽</span>
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
