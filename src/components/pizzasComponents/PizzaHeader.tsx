@@ -6,7 +6,17 @@ const Header: React.FC = () => {
   const productCart = useSelector((state) => state.pizza.productsCart);
 
   function totalQuantity() {
-    return productCart.reduce((total, product) => total + product.quantity, 0);
+    return productCart.reduce(
+      (quantity, product) => quantity + product.quantity,
+      0
+    );
+  }
+
+  function totalPrice() {
+    return productCart.reduce(
+      (price, product) => price + product.selectedPrice * product.quantity,
+      0
+    );
   }
 
   return (
@@ -66,7 +76,7 @@ const Header: React.FC = () => {
               </svg>
               <span className={styles.count}>{totalQuantity()}</span>
             </div>
-            <span className={styles.sum}>123123 ₽</span>
+            <span className={styles.sum}>{totalPrice()} ₽</span>
           </a>
         </div>
       </div>
