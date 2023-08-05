@@ -4,11 +4,23 @@ import styles from "./PizzaCart.module.css";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { incrementQuantity, decrementQuantity } from "../../redux/pizzaSlice";
+import { useEffect } from "react";
+import {
+  incrementQuantity,
+  decrementQuantity,
+  calculatedTotalPrice,
+} from "../../redux/pizzaSlice";
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
+
   const productCart = useSelector((state) => state.pizza.productsCart);
+
+  const totalPrice = useSelector((state) => state.pizza.totalPrice);
+
+  useEffect(() => {
+    dispatch(calculatedTotalPrice());
+  });
 
   function addItem(productId) {
     dispatch(incrementQuantity(productId));
@@ -18,7 +30,6 @@ const Cart: React.FC = () => {
     dispatch(decrementQuantity(productId));
   }
 
-  console.log(productCart);
   return (
     <>
       <div className="col-md-2 mt-5">
@@ -80,7 +91,7 @@ const Cart: React.FC = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <span>888 ₽</span>
+                    <span>{product.selectedPrice * product.quantity} ₽</span>
                   </div>
                 </div>
               ))}
@@ -95,7 +106,10 @@ const Cart: React.FC = () => {
                 <div className={classNames("d-flex", styles.buttons)}>
                   <div className={styles.summ}>
                     К оплате:
-                    <strong className={styles.totalPrice}> 88888 ₽</strong>
+                    <strong className={styles.totalPrice}>
+                      {" "}
+                      {totalPrice} ₽
+                    </strong>
                   </div>
                   <a className={styles.checkoutCart}>Перейти к оформлению</a>
                 </div>

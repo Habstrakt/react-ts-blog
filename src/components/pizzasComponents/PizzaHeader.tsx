@@ -1,10 +1,16 @@
 import React from "react";
 import styles from "./PizzaHeader.module.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { calculatedTotalPrice } from "../../redux/pizzaSlice";
+import { useEffect } from "react";
 
 const Header: React.FC = () => {
+  const dispatch = useDispatch();
+
   const productCart = useSelector((state) => state.pizza.productsCart);
+
+  const totalPrice = useSelector((state) => state.pizza.totalPrice);
 
   function totalQuantity() {
     return productCart.reduce(
@@ -13,12 +19,9 @@ const Header: React.FC = () => {
     );
   }
 
-  function totalPrice() {
-    return productCart.reduce(
-      (price, product) => price + product.selectedPrice * product.quantity,
-      0
-    );
-  }
+  useEffect(() => {
+    dispatch(calculatedTotalPrice());
+  });
 
   return (
     <nav className={styles.nav}>
@@ -77,7 +80,7 @@ const Header: React.FC = () => {
               </svg>
               <span className={styles.count}>{totalQuantity()}</span>
             </div>
-            <span className={styles.sum}>{totalPrice()} ₽</span>
+            <span className={styles.sum}>{totalPrice} ₽</span>
           </Link>
         </div>
       </div>

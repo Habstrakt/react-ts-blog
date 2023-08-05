@@ -4,6 +4,7 @@ const pizzaSlice = createSlice({
   name: "pizza",
   initialState: {
     productsCart: [],
+    totalPrice: 0,
   },
   reducers: {
     addProductToCart: (state, action) => {
@@ -41,12 +42,30 @@ const pizzaSlice = createSlice({
 
       if (product) {
         product.quantity -= 1;
+
+        if (product.quantity === 0) {
+          const productIndex = state.productsCart.findIndex(
+            (product) => product.id === productId
+          );
+          state.productsCart.splice(productIndex, 1);
+        }
       }
+    },
+
+    calculatedTotalPrice: (state) => {
+      state.totalPrice = state.productsCart.reduce(
+        (price, product) => price + product.selectedPrice * product.quantity,
+        0
+      );
     },
   },
 });
 
-export const { addProductToCart, incrementQuantity, decrementQuantity } =
-  pizzaSlice.actions;
+export const {
+  addProductToCart,
+  incrementQuantity,
+  decrementQuantity,
+  calculatedTotalPrice,
+} = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;
