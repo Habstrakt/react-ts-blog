@@ -111,7 +111,12 @@ const Cart: React.FC = () => {
                       {totalPrice} ₽
                     </strong>
                   </div>
-                  <a className={styles.checkoutCart}>Перейти к оформлению</a>
+                  <Link
+                    to="/portfolio/pizzas/checkout"
+                    className={styles.checkoutCart}
+                  >
+                    Перейти к оформлению
+                  </Link>
                 </div>
               </div>
             </div>

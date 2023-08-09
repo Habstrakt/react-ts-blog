@@ -11,6 +11,7 @@ import ToDo from "./pages/TodoPage";
 
 import Pizza from "./pages/pizzas/PizzaPage";
 import Cart from "./pages/pizzas/PizzaCartPage";
+import Checkout from "./pages/pizzas/PizzaCheckout";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const App: React.FC = () => {
               <Route path="/portfolio/todo" element={<ToDo />} />
               <Route path="/portfolio/pizzas" element={<Pizza />} />
               <Route path="/portfolio/pizzas/cart" element={<Cart />} />
+              <Route path="/portfolio/pizzas/checkout" element={<Checkout />} />
             </Routes>
           </div>
         </div>
