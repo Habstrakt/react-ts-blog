@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PizzaCheckout.module.css";
 import classNames from "classnames";
 import cartImage from "../../assets/img/cart.png";
@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateDeliveryMethod,
   updatePaymentMethod,
+  setClientName,
 } from "../../redux/pizzaSlice";
-import { useState } from "react";
 
 const Checkout: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,19 +21,34 @@ const Checkout: React.FC = () => {
     "Наличными",
   ];
 
+  const [nameValue, setNameValue] = useState("");
+
+  const [textNameError, setTextNameError] = useState("");
+
+  const [textPhoneError, setTextPhoneError] = useState("");
+
   const storeDeliveryMethod = useSelector(
     (state) => state.pizza.deliveryMethod
   );
+
+  const storePaymentMethod = useSelector((state) => state.pizza.paymentMethod);
+
+  function validateName() {
+    const isNameLengthValid = nameValue.length > 0;
+
+    if (!isNameLengthValid) {
+      setTextNameError("Введите имя!");
+    } else {
+      setTextNameError("");
+      dispatch(setClientName(nameValue));
+    }
+  }
 
   function isActiveDeliveryMethod(deliveryMethod) {
     return deliveryMethod === storeDeliveryMethod;
   }
 
   function isActivePaymentMethod(paymentMethod) {
-    const storePaymentMethod = useSelector(
-      (state) => state.pizza.paymentMethod
-    );
-
     return paymentMethod === storePaymentMethod;
   }
 
@@ -98,12 +113,21 @@ const Checkout: React.FC = () => {
                             *
                           </abbr>
                         </label>
-                        <span className="error_input">textNameError</span>
+                        {textNameError && (
+                          <span className={styles.error_input}>
+                            {textNameError}
+                          </span>
+                        )}
                         <span className={styles.inputWrapper}>
                           <input
                             type="text"
                             name="billing_first_name"
                             id="billing_first_name"
+                            onBlur={validateName}
+                            defaultValue={nameValue}
+                            onChange={(event) =>
+                              setNameValue(event.target.value)
+                            }
                             className={styles.inputText}
                           />
                         </span>
