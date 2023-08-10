@@ -1,8 +1,50 @@
 import React from "react";
 import styles from "./PizzaCheckout.module.css";
 import classNames from "classnames";
+import cartImage from "../../assets/img/cart.png";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  updateDeliveryMethod,
+  updatePaymentMethod,
+} from "../../redux/pizzaSlice";
+import { useState } from "react";
 
 const Checkout: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const deliveryMethods = ["Самовывоз", "Доставка"];
+
+  const paymentMethods = [
+    "Оплата картой онлайн",
+    "Картой курьеру",
+    "Наличными",
+  ];
+
+  function isActiveDeliveryMethod(deliveryMethod) {
+    const storeDeliveryMethod = useSelector(
+      (state) => state.pizza.deliveryMethod
+    );
+
+    return deliveryMethod === storeDeliveryMethod;
+  }
+
+  function isActivePaymentMethod(paymentMethod) {
+    const storePaymentMethod = useSelector(
+      (state) => state.pizza.paymentMethod
+    );
+
+    return paymentMethod === storePaymentMethod;
+  }
+
+  function selectDelivery(index) {
+    dispatch(updateDeliveryMethod(deliveryMethods[index]));
+  }
+
+  function selectPayment(index) {
+    dispatch(updatePaymentMethod(paymentMethods[index]));
+  }
+
   return (
     <>
       <div className={styles.checkout}>
@@ -17,7 +59,7 @@ const Checkout: React.FC = () => {
                   </p>
                 </div>
                 <div className={styles.logo}>
-                  <img src="@/assets/img/cart.png" alt="" />
+                  <img src={cartImage} alt="" />
                 </div>
               </div>
             </div>
@@ -30,7 +72,7 @@ const Checkout: React.FC = () => {
                         className={classNames("form-row", styles.form)}
                         id="billing_phone_field"
                       >
-                        <label for="billing_phone">
+                        <label htmlFor="billing_phone">
                           Телефон
                           <abbr className={styles.required} title="обязательно">
                             *
@@ -50,9 +92,9 @@ const Checkout: React.FC = () => {
                         className={classNames("form-row", styles.form)}
                         id="billing_first_name_field"
                       >
-                        <label for="billing_first_name">
+                        <label htmlFor="billing_first_name">
                           Имя
-                          <abbr className="required" title="обязательно">
+                          <abbr className={styles.required} title="обязательно">
                             *
                           </abbr>
                         </label>
@@ -71,7 +113,7 @@ const Checkout: React.FC = () => {
                       className={classNames("form-row", styles.form)}
                       id="billing_email_field"
                     >
-                      <label for="billing_email">Email</label>
+                      <label htmlFor="billing_email">Email</label>
                       <span className={styles.inputWrapper}>
                         <input
                           type="email"
@@ -83,7 +125,20 @@ const Checkout: React.FC = () => {
                     </p>
                     <div className={styles.type_delivery}>
                       <ul className={styles.delivery_items}>
-                        <li className={styles.delivery_item}>Тут доставка</li>
+                        {deliveryMethods.map((delivery, index) => (
+                          <li
+                            key={delivery}
+                            onClick={() => selectDelivery(index)}
+                            className={classNames(
+                              styles.delivery_item,
+                              isActiveDeliveryMethod(deliveryMethods[index])
+                                ? styles.active
+                                : ""
+                            )}
+                          >
+                            {delivery}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                     <div>
@@ -91,7 +146,7 @@ const Checkout: React.FC = () => {
                         className={classNames("form-row", styles.form)}
                         id="billing_street_field"
                       >
-                        <label for="billing_street">Адрес доставки</label>
+                        <label htmlFor="billing_street">Адрес доставки</label>
                         <span className={styles.inputWrapper}>
                           <input
                             type="text"
@@ -106,7 +161,7 @@ const Checkout: React.FC = () => {
                           className={classNames("form-row", styles.form)}
                           id="billing_home_field"
                         >
-                          <label for="billing_home">Дом</label>
+                          <label htmlFor="billing_home">Дом</label>
                           <span className={styles.inputWrapper}>
                             <input
                               type="text"
@@ -120,7 +175,7 @@ const Checkout: React.FC = () => {
                           className={classNames("form-row", styles.form)}
                           id="billing_first_apartment_field"
                         >
-                          <label for="billing_apartment">Квартира</label>
+                          <label htmlFor="billing_apartment">Квартира</label>
                           <span className={styles.inputWrapper}>
                             <input
                               type="text"
@@ -137,7 +192,20 @@ const Checkout: React.FC = () => {
                         <label>Способ оплаты</label>
                         <div className={styles.payment_methods_wrap}>
                           <ul className={styles.payment_methods}>
-                            <li>Оплата</li>
+                            {paymentMethods.map((payment, index) => (
+                              <li
+                                key={payment}
+                                onClick={() => selectPayment(index)}
+                                className={classNames(
+                                  styles.delivery_item,
+                                  isActivePaymentMethod(paymentMethods[index])
+                                    ? styles.active
+                                    : ""
+                                )}
+                              >
+                                {payment}
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       </div>

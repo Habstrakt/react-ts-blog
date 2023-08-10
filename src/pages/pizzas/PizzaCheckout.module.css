@@ -115,15 +115,14 @@
   color: red;
   font-weight: 700;
   border: 0;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 #order_review {
   margin-top: 20px;
 }
-.payment_methods_wrap {
-  display: flex;
-}
+
 .payment_methods {
+  display: flex;
   padding: 0;
   width: 100%;
 }

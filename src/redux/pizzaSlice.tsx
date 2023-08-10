@@ -5,6 +5,16 @@ const pizzaSlice = createSlice({
   initialState: {
     productsCart: [],
     totalPrice: 0,
+    deliveryMethod: "Самовывоз",
+    paymentMethod: "Оплата картой онлайн",
+    deliveryInfo: {
+      phone: null,
+      name: null,
+      email: null,
+      address: null,
+      house: null,
+      apartment: null,
+    },
   },
   reducers: {
     addProductToCart: (state, action) => {
@@ -22,6 +32,7 @@ const pizzaSlice = createSlice({
         state.productsCart.push({ ...newProduct, quantity: 1 });
       }
     },
+
     incrementQuantity: (state, action) => {
       const productId = action.payload;
 
@@ -33,6 +44,7 @@ const pizzaSlice = createSlice({
         product.quantity += 1;
       }
     },
+
     decrementQuantity: (state, action) => {
       const productId = action.payload;
 
@@ -58,6 +70,14 @@ const pizzaSlice = createSlice({
         0
       );
     },
+
+    updateDeliveryMethod: (state, action) => {
+      state.deliveryMethod = action.payload;
+    },
+
+    updatePaymentMethod: (state, action) => {
+      state.paymentMethod = action.payload;
+    },
   },
 });
 
@@ -66,6 +86,8 @@ export const {
   incrementQuantity,
   decrementQuantity,
   calculatedTotalPrice,
+  updateDeliveryMethod,
+  updatePaymentMethod,
 } = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;
