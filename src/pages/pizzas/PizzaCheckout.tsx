@@ -21,11 +21,11 @@ const Checkout: React.FC = () => {
     "Наличными",
   ];
 
-  function isActiveDeliveryMethod(deliveryMethod) {
-    const storeDeliveryMethod = useSelector(
-      (state) => state.pizza.deliveryMethod
-    );
+  const storeDeliveryMethod = useSelector(
+    (state) => state.pizza.deliveryMethod
+  );
 
+  function isActiveDeliveryMethod(deliveryMethod) {
     return deliveryMethod === storeDeliveryMethod;
   }
 
@@ -141,52 +141,55 @@ const Checkout: React.FC = () => {
                         ))}
                       </ul>
                     </div>
-                    <div>
-                      <p
-                        className={classNames("form-row", styles.form)}
-                        id="billing_street_field"
-                      >
-                        <label htmlFor="billing_street">Адрес доставки</label>
-                        <span className={styles.inputWrapper}>
-                          <input
-                            type="text"
-                            name="billing_street"
-                            id="street"
-                            className={styles.inputText}
-                          />
-                        </span>
-                      </p>
-                      <div className="checkout__top-fields">
+                    {storeDeliveryMethod !== "Самовывоз" && (
+                      <div>
                         <p
                           className={classNames("form-row", styles.form)}
-                          id="billing_home_field"
+                          id="billing_street_field"
                         >
-                          <label htmlFor="billing_home">Дом</label>
+                          <label htmlFor="billing_street">Адрес доставки</label>
                           <span className={styles.inputWrapper}>
                             <input
                               type="text"
-                              name="billing_home"
-                              id="home"
+                              name="billing_street"
+                              id="street"
                               className={styles.inputText}
                             />
                           </span>
                         </p>
-                        <p
-                          className={classNames("form-row", styles.form)}
-                          id="billing_first_apartment_field"
-                        >
-                          <label htmlFor="billing_apartment">Квартира</label>
-                          <span className={styles.inputWrapper}>
-                            <input
-                              type="text"
-                              name="billing_apartment"
-                              id="apartment"
-                              className={styles.inputText}
-                            />
-                          </span>
-                        </p>
+                        <div className="checkout__top-fields">
+                          <p
+                            className={classNames("form-row", styles.form)}
+                            id="billing_home_field"
+                          >
+                            <label htmlFor="billing_home">Дом</label>
+                            <span className={styles.inputWrapper}>
+                              <input
+                                type="text"
+                                name="billing_home"
+                                id="home"
+                                className={styles.inputText}
+                              />
+                            </span>
+                          </p>
+                          <p
+                            className={classNames("form-row", styles.form)}
+                            id="billing_first_apartment_field"
+                          >
+                            <label htmlFor="billing_apartment">Квартира</label>
+                            <span className={styles.inputWrapper}>
+                              <input
+                                type="text"
+                                name="billing_apartment"
+                                id="apartment"
+                                className={styles.inputText}
+                              />
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    )}
+
                     <div id={styles.order_review}>
                       <div id="payment">
                         <label>Способ оплаты</label>
