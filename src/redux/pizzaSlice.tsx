@@ -82,6 +82,10 @@ const pizzaSlice = createSlice({
     setClientName: (state, action) => {
       state.deliveryInfo.name = action.payload;
     },
+
+    setClientPhone: (state, action) => {
+      state.deliveryInfo.phone = action.payload;
+    },
   },
 });
 
@@ -93,6 +97,7 @@ export const {
   updateDeliveryMethod,
   updatePaymentMethod,
   setClientName,
+  setClientPhone,
 } = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;

@@ -3,11 +3,13 @@ import styles from "./PizzaCheckout.module.css";
 import classNames from "classnames";
 import cartImage from "../../assets/img/cart.png";
 import { useDispatch, useSelector } from "react-redux";
+import InputMask from "react-input-mask";
 
 import {
   updateDeliveryMethod,
   updatePaymentMethod,
   setClientName,
+  setClientPhone,
 } from "../../redux/pizzaSlice";
 
 const Checkout: React.FC = () => {
@@ -25,6 +27,8 @@ const Checkout: React.FC = () => {
 
   const [textNameError, setTextNameError] = useState("");
 
+  const [phoneValue, setPhoneValue] = useState("");
+
   const [textPhoneError, setTextPhoneError] = useState("");
 
   const storeDeliveryMethod = useSelector(
@@ -41,6 +45,21 @@ const Checkout: React.FC = () => {
     } else {
       setTextNameError("");
       dispatch(setClientName(nameValue));
+    }
+  }
+
+  function validatePhone() {
+    const isPhoneValid = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phoneValue);
+
+    const isPhoneLengthValid = phoneValue.length === 16;
+
+    if (!isPhoneValid && isPhoneLengthValid) {
+      setTextPhoneError(
+        "Введите корректный номер телефона! Пример: +7(960)111-11-11"
+      );
+    } else {
+      setTextPhoneError("");
+      dispatch(setClientPhone(phoneValue));
     }
   }
 
@@ -93,14 +112,23 @@ const Checkout: React.FC = () => {
                             *
                           </abbr>
                         </label>
-                        <span className="error_input">textPhoneError</span>
+                        <span className={styles.error_input}>
+                          {textPhoneError}
+                        </span>
                         <span className={styles.inputWrapper}>
-                          <input
+                          <InputMask
+                            className={styles.inputText}
                             type="tel"
                             name="billing_phone"
                             id="billing_phone"
-                            className={styles.inputText}
-                          />
+                            mask="+7(***)***-**-**"
+                            placeholder="+7(___)___-__-__"
+                            defaultValue={phoneValue}
+                            onChange={(event) =>
+                              setPhoneValue(event.target.value)
+                            }
+                            onBlur={validatePhone}
+                          ></InputMask>
                         </span>
                       </p>
                       <p
