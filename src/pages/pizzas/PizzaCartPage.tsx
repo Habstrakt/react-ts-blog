@@ -16,7 +16,9 @@ const Cart: React.FC = () => {
 
   const productCart = useSelector((state) => state.pizza.productsCart);
 
-  const totalPrice = useSelector((state) => state.pizza.totalPrice);
+  const totalPrice = useSelector(
+    (state) => state.pizza.deliveryInfo.totalPrice
+  );
 
   useEffect(() => {
     dispatch(calculatedTotalPrice());

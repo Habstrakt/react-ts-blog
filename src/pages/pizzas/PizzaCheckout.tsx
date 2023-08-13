@@ -42,8 +42,6 @@ const Checkout: React.FC = () => {
     (state) => state.pizza.deliveryInfo.paymentMethod
   );
 
-  const storeTotalPrice = useSelector((state) => state.pizza.totalPrice);
-
   const storeDeliveryInfo = useSelector((state) => state.pizza.deliveryInfo);
 
   function validateName() {
@@ -96,20 +94,14 @@ const Checkout: React.FC = () => {
       console.log("отправка формы");
 
       const jsonProductCart = JSON.stringify(productCart);
-      const jsonTotalPrice = JSON.stringify(storeTotalPrice);
+
       const jsonDeliveryInfo = JSON.stringify(storeDeliveryInfo);
 
-      const file = new Blob(
-        [jsonProductCart, jsonDeliveryInfo, jsonTotalPrice],
-        {
-          type: "application/json",
-        }
-      );
+      const file = new Blob([jsonProductCart, jsonDeliveryInfo], {
+        type: "application/json",
+      });
       const fileURL = URL.createObjectURL(file);
       window.location.href = fileURL;
-      console.log(productCart);
-      console.log(storeTotalPrice);
-      console.log(storeDeliveryInfo);
     }
   }
 

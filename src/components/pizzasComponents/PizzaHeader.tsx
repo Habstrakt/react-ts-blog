@@ -10,7 +10,7 @@ const Header: React.FC = () => {
 
   const productCart = useSelector((state) => state.pizza.productsCart);
 
-  const totalPrice = useSelector((state) => state.pizza.totalPrice);
+  const totalPrice = useSelector((state) => state.pizza.deliveryInfo.totalPrice);
 
   function totalQuantity() {
     return productCart.reduce(

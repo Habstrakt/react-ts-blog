@@ -4,10 +4,10 @@ const pizzaSlice = createSlice({
   name: "pizza",
   initialState: {
     productsCart: [],
-    totalPrice: 0,
     deliveryInfo: {
       deliveryMethod: "Самовывоз",
       paymentMethod: "Оплата картой онлайн",
+      totalPrice: 0,
       phone: null,
       name: null,
       email: null,
@@ -65,7 +65,7 @@ const pizzaSlice = createSlice({
     },
 
     calculatedTotalPrice: (state) => {
-      state.totalPrice = state.productsCart.reduce(
+      state.deliveryInfo.totalPrice = state.productsCart.reduce(
         (price, product) => price + product.selectedPrice * product.quantity,
         0
       );
