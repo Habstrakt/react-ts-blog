@@ -34,8 +34,6 @@ const Checkout: React.FC = () => {
 
   const productCart = useSelector((state) => state.pizza.productsCart);
 
-  const delivery = useSelector((state) => state.pizza.deliveryInfo);
-
   const storeDeliveryMethod = useSelector(
     (state) => state.pizza.deliveryInfo.deliveryMethod
   );
@@ -43,6 +41,10 @@ const Checkout: React.FC = () => {
   const storePaymentMethod = useSelector(
     (state) => state.pizza.deliveryInfo.paymentMethod
   );
+
+  const storeTotalPrice = useSelector((state) => state.pizza.totalPrice);
+
+  const storeDeliveryInfo = useSelector((state) => state.pizza.deliveryInfo);
 
   function validateName() {
     const isNameLengthValid = nameValue.length > 0;
@@ -56,11 +58,11 @@ const Checkout: React.FC = () => {
   }
 
   function validatePhone() {
-    const isPhoneValid = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phoneValue);
+    const phoneValid = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phoneValue);
 
     const isPhoneLengthValid = phoneValue.length === 16;
 
-    if (!isPhoneValid && isPhoneLengthValid) {
+    if (!phoneValid && isPhoneLengthValid) {
       setIsPhoneValid(true);
     } else {
       setIsPhoneValid(false);
@@ -82,6 +84,33 @@ const Checkout: React.FC = () => {
 
   function selectPayment(index) {
     dispatch(updatePaymentMethod(paymentMethods[index]));
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+
+    if (!phoneValue && !nameValue) {
+      setIsNameValid(true);
+      setIsPhoneValid(true);
+    } else {
+      console.log("отправка формы");
+
+      const jsonProductCart = JSON.stringify(productCart);
+      const jsonTotalPrice = JSON.stringify(storeTotalPrice);
+      const jsonDeliveryInfo = JSON.stringify(storeDeliveryInfo);
+
+      const file = new Blob(
+        [jsonProductCart, jsonDeliveryInfo, jsonTotalPrice],
+        {
+          type: "application/json",
+        }
+      );
+      const fileURL = URL.createObjectURL(file);
+      window.location.href = fileURL;
+      console.log(productCart);
+      console.log(storeTotalPrice);
+      console.log(storeDeliveryInfo);
+    }
   }
 
   return (
@@ -106,7 +135,7 @@ const Checkout: React.FC = () => {
               <div className="col-md-10">
                 <div className={styles.cart}>
                   <div className={styles.delivery}>
-                    <form method="post" name="checkout">
+                    <form onSubmit={submitForm} method="post" name="checkout">
                       <div className={styles.checkout__topFields}>
                         <p
                           className={classNames("form-row", styles.form)}
@@ -215,9 +244,7 @@ const Checkout: React.FC = () => {
                             className={classNames("form-row", styles.form)}
                             id="billing_street_field"
                           >
-                            <label htmlFor="billing_street">
-                              Адрес доставки
-                            </label>
+                            <label htmlFor="billing_street">Улица</label>
                             <span className={styles.inputWrapper}>
                               <input
                                 type="text"
