@@ -26,27 +26,31 @@ const Checkout: React.FC = () => {
 
   const [nameValue, setNameValue] = useState("");
 
-  const [textNameError, setTextNameError] = useState("");
+  const [isNameValid, setIsNameValid] = useState(false);
 
   const [phoneValue, setPhoneValue] = useState("");
 
-  const [textPhoneError, setTextPhoneError] = useState("");
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
 
   const productCart = useSelector((state) => state.pizza.productsCart);
 
+  const delivery = useSelector((state) => state.pizza.deliveryInfo);
+
   const storeDeliveryMethod = useSelector(
-    (state) => state.pizza.deliveryMethod
+    (state) => state.pizza.deliveryInfo.deliveryMethod
   );
 
-  const storePaymentMethod = useSelector((state) => state.pizza.paymentMethod);
+  const storePaymentMethod = useSelector(
+    (state) => state.pizza.deliveryInfo.paymentMethod
+  );
 
   function validateName() {
     const isNameLengthValid = nameValue.length > 0;
 
     if (!isNameLengthValid) {
-      setTextNameError("Введите имя!");
+      setIsNameValid(true);
     } else {
-      setTextNameError("");
+      setIsNameValid(false);
       dispatch(setClientName(nameValue));
     }
   }
@@ -57,11 +61,9 @@ const Checkout: React.FC = () => {
     const isPhoneLengthValid = phoneValue.length === 16;
 
     if (!isPhoneValid && isPhoneLengthValid) {
-      setTextPhoneError(
-        "Введите корректный номер телефона! Пример: +7(960)111-11-11"
-      );
+      setIsPhoneValid(true);
     } else {
-      setTextPhoneError("");
+      setIsPhoneValid(false);
       dispatch(setClientPhone(phoneValue));
     }
   }
@@ -119,9 +121,13 @@ const Checkout: React.FC = () => {
                               *
                             </abbr>
                           </label>
-                          <span className={styles.error_input}>
-                            {textPhoneError}
-                          </span>
+                          {isPhoneValid && (
+                            <span className={styles.error_input}>
+                              Введите корректный номер телефона! Пример:
+                              +7(960)111-11-11
+                            </span>
+                          )}
+
                           <span className={styles.inputWrapper}>
                             <InputMask
                               className={styles.inputText}
@@ -151,9 +157,9 @@ const Checkout: React.FC = () => {
                               *
                             </abbr>
                           </label>
-                          {textNameError && (
+                          {isNameValid && (
                             <span className={styles.error_input}>
-                              {textNameError}
+                              Введите имя!
                             </span>
                           )}
                           <span className={styles.inputWrapper}>
@@ -281,7 +287,13 @@ const Checkout: React.FC = () => {
                       <div className={styles.payment_total}>
                         <button
                           type="submit"
-                          className={styles.checkout_button}
+                          className={classNames(
+                            styles.checkout_button,
+                            !isNameValid && !isPhoneValid
+                              ? styles.redBtn
+                              : styles.greyBtn
+                          )}
+                          disabled={isNameValid || isPhoneValid}
                           id="place_order"
                         >
                           Подтвердить заказ

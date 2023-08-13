@@ -5,9 +5,9 @@ const pizzaSlice = createSlice({
   initialState: {
     productsCart: [],
     totalPrice: 0,
-    deliveryMethod: "Самовывоз",
-    paymentMethod: "Оплата картой онлайн",
     deliveryInfo: {
+      deliveryMethod: "Самовывоз",
+      paymentMethod: "Оплата картой онлайн",
       phone: null,
       name: null,
       email: null,
@@ -72,11 +72,11 @@ const pizzaSlice = createSlice({
     },
 
     updateDeliveryMethod: (state, action) => {
-      state.deliveryMethod = action.payload;
+      state.deliveryInfo.deliveryMethod = action.payload;
     },
 
     updatePaymentMethod: (state, action) => {
-      state.paymentMethod = action.payload;
+      state.deliveryInfo.paymentMethod = action.payload;
     },
 
     setClientName: (state, action) => {
