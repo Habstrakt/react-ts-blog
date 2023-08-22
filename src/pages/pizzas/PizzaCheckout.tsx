@@ -24,11 +24,11 @@ const Checkout: React.FC = () => {
     "Наличными",
   ];
 
-  const [nameValue, setNameValue] = useState("");
+  const [nameValue, setNameValue] = useState<string>("");
 
-  const [isNameValid, setIsNameValid] = useState(false);
+  const [isNameValid, setIsNameValid] = useState<boolean>(false);
 
-  const [phoneValue, setPhoneValue] = useState("");
+  const [phoneValue, setPhoneValue] = useState<string>("");
 
   const [isPhoneValid, setIsPhoneValid] = useState(false);
 
@@ -68,19 +68,19 @@ const Checkout: React.FC = () => {
     }
   }
 
-  function isActiveDeliveryMethod(deliveryMethod) {
+  function isActiveDeliveryMethod(deliveryMethod: string) {
     return deliveryMethod === storeDeliveryMethod;
   }
 
-  function isActivePaymentMethod(paymentMethod) {
+  function isActivePaymentMethod(paymentMethod: string) {
     return paymentMethod === storePaymentMethod;
   }
 
-  function selectDelivery(index) {
+  function selectDelivery(index: number) {
     dispatch(updateDeliveryMethod(deliveryMethods[index]));
   }
 
-  function selectPayment(index) {
+  function selectPayment(index: number) {
     dispatch(updatePaymentMethod(paymentMethods[index]));
   }
 

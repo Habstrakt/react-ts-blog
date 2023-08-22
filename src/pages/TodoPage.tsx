@@ -36,7 +36,7 @@ const ToDo: React.FC = () => {
     }
   }, []);
 
-  function deleteTodo(index) {
+  function deleteTodo(index: number) {
     setTodo((todos) => {
       const updatedTodos = todos.filter((_, i) => i !== index);
 
@@ -48,7 +48,7 @@ const ToDo: React.FC = () => {
     setEditTodo(false);
   }
 
-  function showEditTodo(index) {
+  function showEditTodo(index: number) {
     setEditTodo(true);
     setIndexTodo(index);
     setTemporaryTodo(todo[index]);

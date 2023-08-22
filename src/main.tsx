@@ -8,7 +8,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
     <Provider store={store}>
       <App />

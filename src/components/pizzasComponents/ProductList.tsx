@@ -17,6 +17,16 @@ interface Product {
   prices: number[];
   selectedSize: number;
   selectedPrice: number;
+  quantity: number;
+}
+
+interface ProductCart {
+  id: number;
+  name: string;
+  imageUrl: string;
+  selectedSize: number;
+  selectedPrice: number;
+  quantity: number;
 }
 
 const ProductList: React.FC = () => {
@@ -34,7 +44,7 @@ const ProductList: React.FC = () => {
 
   const productCart = useSelector((state) => state.pizza.productsCart);
 
-  function handleAddCart(item) {
+  function handleAddCart(item: ProductCart) {
     dispatch(
       addProductToCart({
         id: item.id,
@@ -47,7 +57,7 @@ const ProductList: React.FC = () => {
     );
   }
 
-  function filterProducts(index) {
+  function filterProducts(index: number) {
     const category = categoryProducts[index];
 
     const productsData = foodsData.products.filter((item) => {
@@ -127,7 +137,7 @@ const ProductList: React.FC = () => {
                   {item.description}
                 </div>
                 <div className="mt-2">
-                  {item.sizes?.map((size, sizeIndex) => {
+                  {item.sizes?.map((size: number, sizeIndex: number) => {
                     const productInCart = productCart.find(
                       (product) =>
                         product.id === item.id && product.selectedSize === size

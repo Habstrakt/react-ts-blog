@@ -11,6 +11,15 @@ import {
   calculatedTotalPrice,
 } from "../../redux/pizzaSlice";
 
+interface ProductCart {
+  id: number;
+  name: string;
+  imageUrl: string;
+  selectedSize: number;
+  selectedPrice: number;
+  quantity: number;
+}
+
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -24,11 +33,11 @@ const Cart: React.FC = () => {
     dispatch(calculatedTotalPrice());
   });
 
-  function addItem(productId) {
+  function addItem(productId: number) {
     dispatch(incrementQuantity(productId));
   }
 
-  function removeItem(productId) {
+  function removeItem(productId: number) {
     dispatch(decrementQuantity(productId));
   }
 
@@ -50,7 +59,7 @@ const Cart: React.FC = () => {
           <div className={styles.zakaz}>Состав заказа</div>
           <div className="cart_wrapper">
             <div className={styles.cartContent}>
-              {productCart.map((product, index) => (
+              {productCart.map((product: ProductCart, index: number) => (
                 <div
                   key={index}
                   className={classNames("d-flex", styles.cartItem)}
