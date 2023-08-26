@@ -1,9 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const loadInitialState = () => {
+  const localStorageData = localStorage.getItem("cart");
+
+  if (localStorageData) {
+    return JSON.parse(localStorageData);
+  }
+
+  return [];
+};
+
 const pizzaSlice = createSlice({
   name: "pizza",
   initialState: {
-    productsCart: [],
+    productsCart: loadInitialState(),
     deliveryInfo: {
       deliveryMethod: "Самовывоз",
       paymentMethod: "Оплата картой онлайн",
@@ -17,6 +27,9 @@ const pizzaSlice = createSlice({
     },
   },
   reducers: {
+    setProductsLS: (state, action) => {
+      state.productsCart = action.payload;
+    },
     addProductToCart: (state, action) => {
       const newProduct = action.payload;
 
@@ -31,6 +44,8 @@ const pizzaSlice = createSlice({
       } else {
         state.productsCart.push({ ...newProduct, quantity: 1 });
       }
+
+      localStorage.setItem("cart", JSON.stringify(state.productsCart));
     },
 
     incrementQuantity: (state, action) => {
@@ -42,6 +57,7 @@ const pizzaSlice = createSlice({
 
       if (product) {
         product.quantity += 1;
+        localStorage.setItem("cart", JSON.stringify(state.productsCart));
       }
     },
 
@@ -62,6 +78,8 @@ const pizzaSlice = createSlice({
           state.productsCart.splice(productIndex, 1);
         }
       }
+
+      localStorage.setItem("cart", JSON.stringify(state.productsCart));
     },
 
     calculatedTotalPrice: (state) => {
@@ -90,6 +108,7 @@ const pizzaSlice = createSlice({
 });
 
 export const {
+  setProductsLS,
   addProductToCart,
   incrementQuantity,
   decrementQuantity,

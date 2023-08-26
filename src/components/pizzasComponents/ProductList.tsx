@@ -5,7 +5,7 @@ import foodsData from "../../assets/foods.json";
 import { useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart } from "../../redux/pizzaSlice";
+import { addProductToCart, setProductsLS } from "../../redux/pizzaSlice";
 
 interface Product {
   id: number;
@@ -31,6 +31,8 @@ interface ProductCart {
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
+
+  const localStorageData = JSON.parse(localStorage.getItem("cart"));
 
   const categoryProducts = ["Все", "Пицца", "Закуски", "Напитки"];
 
@@ -100,6 +102,12 @@ const ProductList: React.FC = () => {
       [itemId]: sizeIndex,
     }));
   }
+
+  useEffect(() => {
+    if (localStorageData) {
+      dispatch(setProductsLS(localStorageData));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     filterProducts(0);
