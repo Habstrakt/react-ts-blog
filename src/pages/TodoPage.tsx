@@ -14,7 +14,7 @@ const ToDo: React.FC = () => {
   const addTodo = () => {
     if (!valueTodo) return alert("Ошибка! Поле пустое. Добавьте задачу!");
 
-    setTodo([...todo, valueTodo]);
+    setTodo([...todo, valueTodo.trim()]);
 
     setValueTodo("");
   };

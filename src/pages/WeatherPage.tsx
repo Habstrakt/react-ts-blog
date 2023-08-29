@@ -2,30 +2,41 @@ import React from "react";
 import axios from "axios";
 import { useState } from "react";
 
+interface City {
+  name: string;
+  weather: Array<{ description: string }>;
+  main: {
+    temp: number;
+    feels_like: number;
+  };
+}
+
 const WeatherPage: React.FC = () => {
-  const cityName = React.useRef<string>();
+  const [cityName, setСityName] = useState("");
+  const [city, setCity] = useState<City | null>(null);
 
-  const [city, setCity] = useState<string>("");
-
-  async function getWeather() {
+  const getWeather = async () => {
     try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName.current.value}&appid=042b2ee2c83661dfb42ab95b64d38260&lang=ru&units=metric`
+      const response = await axios.get<City>(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=042b2ee2c83661dfb42ab95b64d38260&lang=ru&units=metric`
       );
 
-      const templateData = response.data;
-
-      setCity(templateData);
+      setCity(response.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>
       <div className="col-lg-9">
         <h1>Узнать погоду приложение</h1>
-        <input type="text" placeholder="Введите город" ref={cityName} />
+        <input
+          type="text"
+          placeholder="Введите город"
+          value={cityName}
+          onChange={(event) => setСityName(event.target.value)}
+        />
         <button onClick={getWeather}>Узнать погоду</button>
         {city && (
           <div className="weatherInfo mt-3">
