@@ -6,21 +6,18 @@ import { useState } from "react";
 const Counter: React.FC = () => {
   const [count, setCount] = useState(0);
 
-  function incrementCount() {
+  const incrementCount = () => {
     setCount((count) => count + 1);
-  }
+  };
 
-  function decrementCount() {
-    if (count === 0) {
-      return;
-    } else {
-      setCount((count) => count - 1);
-    }
-  }
+  const decrementCount = () => {
+    if (!count) return;
+    setCount((count) => count - 1);
+  };
 
-  function resetCount() {
+  const resetCount = () => {
     setCount(0);
-  }
+  };
 
   return (
     <>

@@ -35,6 +35,12 @@ const portfolios: Portfolios[] = [
     text: "Сайт пиццерии. Страница продуктов, а так же корзина",
     instruments: "React, TypeScript, Redux toolkit",
   },
+  {
+    title: "Конструктор портфолио",
+    url: "/portfolio/constructor",
+    text: "Конструктор портфолио. Вы можете заполнить поля, сделать предпосмотр и сохранить себе на ПК в формате pdf.",
+    instruments: "React, TypeScript, Props",
+  },
 ];
 
 const Portfolio: React.FC = () => {

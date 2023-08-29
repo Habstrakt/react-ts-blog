@@ -4,13 +4,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { calculatedTotalPrice } from "../../redux/pizzaSlice";
 import { useEffect } from "react";
+import logo from "../../assets/img/logoPizza.png";
+import cartIcon from "../../assets/img/cart.svg";
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   const productCart = useSelector((state) => state.pizza.productsCart);
 
-  const totalPrice = useSelector((state) => state.pizza.deliveryInfo.totalPrice);
+  const totalPrice = useSelector(
+    (state) => state.pizza.deliveryInfo.totalPrice
+  );
 
   function totalQuantity() {
     return productCart.reduce(
@@ -24,7 +28,9 @@ const Header: React.FC = () => {
   });
 
   return (
-    <nav className={styles.nav}>
+    <>
+
+      <nav className={styles.nav}>
       <div className={styles.menuNav}>
         <div className={styles.logo}>
           <svg
@@ -85,6 +91,7 @@ const Header: React.FC = () => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

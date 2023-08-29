@@ -3,76 +3,66 @@ import classNames from "classnames";
 import styles from "./TodoPage.module.css";
 
 const ToDo: React.FC = () => {
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const inputEditRef = React.useRef<HTMLInputElement | null>(null);
+  const [valueTodo, setValueTodo] = useState("");
 
   const [editTodo, setEditTodo] = useState(false);
-  const [temporaryTodo, setTemporaryTodo] = useState<string>("");
+  const [temporaryTodo, setTemporaryTodo] = useState("");
   const [indexTodo, setIndexTodo] = useState<number | null>(null);
 
   const [todo, setTodo] = useState<string[]>([]);
 
-  function addTodo() {
-    const inputTodo = inputRef.current?.value;
+  const addTodo = () => {
+    if (!valueTodo) return alert("Ошибка! Поле пустое. Добавьте задачу!");
 
-    if (inputTodo) {
-      setTodo((todos) => [...todos, inputTodo]);
+    setTodo([...todo, valueTodo]);
 
-      localStorage.setItem("todos", JSON.stringify([...todo, inputTodo]));
+    setValueTodo("");
+  };
 
-      inputRef.current.value = "";
-    } else {
-      alert("Ошибка! Поле пустое. Добавьте задачу!");
-    }
-  }
-
-  useEffect(() => {
+  const loadTodoFromStorage = () => {
     const storageTodos = localStorage.getItem("todos");
 
-    if (storageTodos) {
-      const parsedTodos = JSON.parse(storageTodos);
+    if (!storageTodos) return;
 
-      setTodo(parsedTodos);
-    }
+    const parsedTodos = JSON.parse(storageTodos);
+    setTodo(parsedTodos);
+  };
+
+  useEffect(() => {
+    loadTodoFromStorage();
   }, []);
 
-  function deleteTodo(index: number) {
-    setTodo((todos) => {
-      const updatedTodos = todos.filter((_, i) => i !== index);
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todo));
+  }, [todo]);
 
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+  const deleteTodo = (index: number) => {
+    const updatedTodos = todo.filter((_, i) => i !== index);
 
-      return updatedTodos;
-    });
+    setTodo(updatedTodos);
 
     setEditTodo(false);
-  }
+  };
 
-  function showEditTodo(index: number) {
+  const showEditTodo = (index: number) => {
     setEditTodo(true);
     setIndexTodo(index);
     setTemporaryTodo(todo[index]);
-  }
+  };
 
-  function saveTodo() {
-    const editedTodo = inputEditRef.current?.value;
+  const saveTodo = () => {
+    if (indexTodo === null) return alert("Выберите задачу");
 
-    if (editedTodo) {
-      setTodo((todo) => {
-        const updatedTodo = [...todo];
+    if (!temporaryTodo.trim())
+      return alert("Ошибка! Поле пустое. Добавьте текст или удалите задачу");
 
-        updatedTodo[indexTodo] = editedTodo;
+    const newTodos = [...todo];
+    newTodos[indexTodo] = temporaryTodo;
 
-        localStorage.setItem("todos", JSON.stringify(updatedTodo));
-
-        return updatedTodo;
-      });
-
-      setEditTodo(false);
-    } else {
-      alert("Ошибка! Поле пустое. Добавьте текст или удалите задачу");
-    }
-  }
+    setTodo(newTodos);
+    setTemporaryTodo("");
+    setEditTodo(false);
+  };
 
   return (
     <div className={classNames("col-lg-8", styles.todoWrapper)}>
@@ -83,8 +73,8 @@ const ToDo: React.FC = () => {
             className="form-control"
             type="text"
             placeholder="Edit todo..."
-            defaultValue={temporaryTodo}
-            ref={inputEditRef}
+            value={temporaryTodo}
+            onChange={(event) => setTemporaryTodo(event.target.value)}
           />
           <button
             className="btn btn-outline-secondary"
@@ -108,7 +98,8 @@ const ToDo: React.FC = () => {
               type="text"
               className="form-control"
               placeholder="Add task...."
-              ref={inputRef}
+              value={valueTodo}
+              onChange={(event) => setValueTodo(event.target.value)}
             />
             <button
               type="button"

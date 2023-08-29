@@ -17,9 +17,9 @@ const Post: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchPost() {
-    try {
-      if (!id) return;
+    if (!id) return;
 
+    try {
       const postUrl = `https://63b30db9ea89e3e3db3cb777.mockapi.io/posts/${id}`;
       const response = await axios.get<Post>(postUrl);
       const postData: Post = response.data;
@@ -32,9 +32,7 @@ const Post: React.FC = () => {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchPost();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isLoading) {
@@ -44,6 +42,7 @@ const Post: React.FC = () => {
       </div>
     );
   }
+
   return (
     <div className="col-lg-8">
       <section>

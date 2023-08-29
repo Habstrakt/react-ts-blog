@@ -7,11 +7,13 @@ import ProductList from "../../components/pizzasComponents/ProductList";
 const Pizza: React.FC = () => {
   return (
     <>
-      <Header />
-      <div className="col-md-12">
-        <section className={styles.mainStyle}>
-          <ProductList />
-        </section>
+      <div id="wrapper">
+        <Header />
+        <div className="col-md-12">
+          <section className={styles.mainStyle}>
+            <ProductList />
+          </section>
+        </div>
       </div>
     </>
   );
